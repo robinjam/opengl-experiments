@@ -45,7 +45,7 @@ void program::set_uniform(const char *name, const glm::vec4 &value)
 		glUniform4fv(location, 1, glm::value_ptr(value));
 }
 
-void program::set_uniform(const char *name, glm::mat4 &value)
+void program::set_uniform(const char *name, const glm::mat4 &value)
 {
 	use();
 
