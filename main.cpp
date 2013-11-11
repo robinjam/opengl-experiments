@@ -33,7 +33,7 @@ namespace
 				num_subdivisions++;
 				update_subdivisions();
 			}
-			if (key == GLFW_KEY_MINUS)
+			if (key == GLFW_KEY_MINUS && !mods)
 			{
 				num_subdivisions--;
 				update_subdivisions();
