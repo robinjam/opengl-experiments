@@ -78,7 +78,7 @@ int main(int argc, const char *argv[])
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-		GLFWwindow *window = glfwCreateWindow(1280, 720, "COMP3004", nullptr, nullptr);
+		GLFWwindow *window = glfwCreateWindow(1024, 576, "COMP3004", nullptr, nullptr);
 		if (!window)
 			throw std::runtime_error("glfwCreateWindow failed");
 
