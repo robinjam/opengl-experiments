@@ -139,7 +139,9 @@ int main(int argc, const char *argv[])
 
 		glPatchParameteri(GL_PATCH_VERTICES, 4);
 
-		glm::mat4 projection = glm::perspective(45.f, 1280.f / 720.f, 1.f, 10.f);
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
+		glm::mat4 projection = glm::perspective(45.f, float(width) / float(height), 1.f, 10.f);
 		glm::mat4 view = glm::lookAt(glm::vec3(0.f, 1.f, 5.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 		glm::mat4 model;
 
