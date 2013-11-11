@@ -14,6 +14,7 @@
 namespace
 {
 	unsigned char num_subdivisions = 8;
+	unsigned char mode = 0;
 
 	void update_subdivisions()
 	{
@@ -37,6 +38,26 @@ namespace
 			{
 				num_subdivisions--;
 				update_subdivisions();
+			}
+			if (key == GLFW_KEY_A)
+			{
+				mode = 0;
+			}
+			if (key == GLFW_KEY_B)
+			{
+				mode = 1;
+			}
+			if (key == GLFW_KEY_C)
+			{
+				mode = 2;
+			}
+			if (key == GLFW_KEY_D)
+			{
+				mode = 3;
+			}
+			if (key == GLFW_KEY_E)
+			{
+				mode = 4;
 			}
 		}
 	}
@@ -132,10 +153,17 @@ int main(int argc, const char *argv[])
 			prog2.set_uniform("transform", mvp);
 
 			glClear(GL_COLOR_BUFFER_BIT);
-			prog.use();
-			glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
-			prog2.use();
-			glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
+
+			switch(mode)
+			{
+			case 2: // Wireframe sphere and normals
+				prog2.use();
+				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
+			case 0: // Wireframe sphere
+				prog.use();
+				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
+				break;
+			}
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
