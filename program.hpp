@@ -3,6 +3,7 @@
 #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
 #include <initializer_list>
 #include "shader.hpp"
 
@@ -14,6 +15,7 @@ public:
 	~program();
 
 	void use();
+	void set_uniform(const char *name, glm::mat4 &value);
 
 	program &operator=(const program &) = delete;
 
