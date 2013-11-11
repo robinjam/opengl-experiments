@@ -1,5 +1,7 @@
 #version 410
 
+// Converts a triangle mesh into a wireframe by replacing each triangle with a line loop
+
 layout(triangles) in;
 layout(line_strip, max_vertices = 4) out;
 

@@ -1,5 +1,7 @@
 #version 410
 
+// Colours every fragment white
+
 out vec4 colour;
 
 void main()

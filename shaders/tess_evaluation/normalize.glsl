@@ -1,5 +1,7 @@
 #version 410
 
+// Normalizes all vertices so that they lie on the unit sphere
+
 layout(quads) in;
 
 uniform mat4 transform;
