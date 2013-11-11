@@ -73,10 +73,12 @@ int main(int argc, const char *argv[])
 		shader quadsphere("shaders/tess_evaluation/normalize.glsl", GL_TESS_EVALUATION_SHADER);
 		shader wireframe("shaders/geometry/wireframe.glsl", GL_GEOMETRY_SHADER);
 		shader normals("shaders/geometry/normals.glsl", GL_GEOMETRY_SHADER);
-		shader solid_white("shaders/fragment/solid_white.glsl", GL_FRAGMENT_SHADER);
+		shader solid("shaders/fragment/solid.glsl", GL_FRAGMENT_SHADER);
 
-		program prog{&passthrough, &quadsphere, &wireframe, &solid_white};
-		program prog2{&passthrough, &quadsphere, &normals, &solid_white};
+		program prog{&passthrough, &quadsphere, &wireframe, &solid};
+		prog.set_uniform("colour", glm::vec4(1.f, 1.f, 1.f, 1.f));
+		program prog2{&passthrough, &quadsphere, &normals, &solid};
+		prog2.set_uniform("colour", glm::vec4(0.f, 1.f, 0.f, 1.f));
 
 		GLfloat a = 1 / sqrt(3);
 		GLfloat vertices[] = {

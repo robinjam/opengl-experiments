@@ -36,6 +36,15 @@ void program::use()
 	glUseProgram(name);
 }
 
+void program::set_uniform(const char *name, const glm::vec4 &value)
+{
+	use();
+
+	GLint location = glGetUniformLocation(this->name, name);
+	if (location != -1)
+		glUniform4fv(location, 1, glm::value_ptr(value));
+}
+
 void program::set_uniform(const char *name, glm::mat4 &value)
 {
 	use();

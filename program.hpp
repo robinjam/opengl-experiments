@@ -15,6 +15,7 @@ public:
 	~program();
 
 	void use();
+	void set_uniform(const char *name, const glm::vec4 &value);
 	void set_uniform(const char *name, glm::mat4 &value);
 
 	program &operator=(const program &) = delete;
