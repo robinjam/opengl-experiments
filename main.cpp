@@ -156,10 +156,13 @@ int main(int argc, const char *argv[])
 		{
 			model = glm::rotate(model, float(glfwGetTime() * 10), glm::vec3(0.f, 1.f, 0.f));
 			glfwSetTime(0.);
-			glm::mat4 mvp = projection * view * model;
-			prog.set_uniform("transform", mvp);
-			prog2.set_uniform("transform", mvp);
-			prog3.set_uniform("transform", mvp);
+			glm::mat4 modelview = view * model;
+			prog.set_uniform("modelview", modelview);
+			prog2.set_uniform("modelview", modelview);
+			prog3.set_uniform("modelview", modelview);
+			prog.set_uniform("projection", projection);
+			prog2.set_uniform("projection", projection);
+			prog3.set_uniform("projection", projection);
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
