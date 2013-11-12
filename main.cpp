@@ -91,16 +91,21 @@ int main(int argc, const char *argv[])
 		std::cout << "[INFO] GL_VERSION: " << glGetString(GL_VERSION) << std::endl;
 		std::cout << "[INFO] GL_SHADING_LANGUAGE_VERSION: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
+
 		shader passthrough("shaders/vertex/passthrough.glsl", GL_VERTEX_SHADER);
 		shader quadsphere("shaders/tess_evaluation/normalize.glsl", GL_TESS_EVALUATION_SHADER);
 		shader wireframe("shaders/geometry/wireframe.glsl", GL_GEOMETRY_SHADER);
 		shader normals("shaders/geometry/normals.glsl", GL_GEOMETRY_SHADER);
 		shader solid("shaders/fragment/solid.glsl", GL_FRAGMENT_SHADER);
+		shader phong("shaders/fragment/phong.glsl", GL_FRAGMENT_SHADER);
 
 		program prog{&passthrough, &quadsphere, &wireframe, &solid};
 		prog.set_uniform("colour", glm::vec4(1.f, 1.f, 1.f, 1.f));
 		program prog2{&passthrough, &quadsphere, &normals, &solid};
 		prog2.set_uniform("colour", glm::vec4(0.f, 1.f, 0.f, 1.f));
+		program prog3{&passthrough, &quadsphere, &phong};
 
 		GLfloat a = 1 / sqrt(3);
 		GLfloat vertices[] = {
@@ -154,8 +159,9 @@ int main(int argc, const char *argv[])
 			glm::mat4 mvp = projection * view * model;
 			prog.set_uniform("transform", mvp);
 			prog2.set_uniform("transform", mvp);
+			prog3.set_uniform("transform", mvp);
 
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			switch(mode)
 			{
@@ -164,6 +170,10 @@ int main(int argc, const char *argv[])
 				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
 			case 0: // Wireframe sphere
 				prog.use();
+				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
+				break;
+			case 3: // Lit sphere
+				prog3.use();
 				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
 				break;
 			}

@@ -6,6 +6,8 @@ layout(quads) in;
 
 uniform mat4 transform;
 
+out vec3 te_Position;
+
 void main()
 {
 	float u = gl_TessCoord.x;
@@ -16,8 +18,8 @@ void main()
 	vec3 p1 =      u  * (1 - v) * gl_in[1].gl_Position.xyz;
 	vec3 p2 =      u  *      v  * gl_in[2].gl_Position.xyz;
 	vec3 p3 = (1 - u) *      v  * gl_in[3].gl_Position.xyz;
-	vec3 p = p0 + p1 + p2 + p3;
+	te_Position = normalize(p0 + p1 + p2 + p3);
 
 	// Normalize the position of the current vertex so that all vertices sit on the unit sphere
-	gl_Position = transform * vec4(normalize(p), 1.0);
+	gl_Position = transform * vec4(te_Position, 1.0);
 }
