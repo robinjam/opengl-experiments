@@ -76,6 +76,7 @@ int main(int argc, const char *argv[])
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_SRGB_CAPABLE, GL_TRUE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 		GLFWwindow *window = glfwCreateWindow(1024, 576, "COMP3004", nullptr, nullptr);
@@ -93,6 +94,12 @@ int main(int argc, const char *argv[])
 
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_FRAMEBUFFER_SRGB);
+
+		GLint value;
+		glGetFramebufferAttachmentParameteriv(GL_DRAW_FRAMEBUFFER, GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING, &value);
+		if (value != GL_SRGB)
+			std::cerr << "[WARNING] Default framebuffer is not sRGB capable" << std::endl;
 
 		shader passthrough("shaders/vertex/passthrough.glsl", GL_VERTEX_SHADER);
 		shader quadsphere("shaders/tess_evaluation/normalize.glsl", GL_TESS_EVALUATION_SHADER);
