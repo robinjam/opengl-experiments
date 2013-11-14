@@ -1,13 +1,14 @@
 #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 
-#include <cmath>
 #include <cstdlib>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <stdexcept>
 
+#include "cube.hpp"
+#include "mesh.hpp"
 #include "shader.hpp"
 #include "program.hpp"
 
@@ -114,42 +115,7 @@ int main(int argc, const char *argv[])
 		prog2.set_uniform("colour", glm::vec4(0.f, 1.f, 0.f, 1.f));
 		program prog3{&passthrough, &quadsphere, &phong};
 
-		GLfloat a = 1 / sqrt(3);
-		GLfloat vertices[] = {
-			 a,  a,  a,
-			-a,  a,  a,
-			-a, -a,  a,
-			 a, -a,  a,
-			 a, -a, -a,
-			 a,  a, -a,
-			-a,  a, -a,
-			-a, -a, -a
-		};
-		GLubyte indices[] = {
-			0, 1, 2, 3,
-			0, 3, 4, 5,
-			0, 5, 6, 1,
-			1, 6, 7, 2,
-			7, 4, 3, 2,
-			4, 7, 6, 5
-		};
-
-		GLuint vao, vbo, ibo;
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glGenBuffers(1, &ibo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-		glPatchParameteri(GL_PATCH_VERTICES, 4);
+		cube c;
 
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
@@ -177,14 +143,14 @@ int main(int argc, const char *argv[])
 			{
 			case 2: // Wireframe sphere and normals
 				prog2.use();
-				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
+				c.draw();
 			case 0: // Wireframe sphere
 				prog.use();
-				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
+				c.draw();
 				break;
 			case 3: // Lit sphere
 				prog3.use();
-				glDrawElements(GL_PATCHES, 24, GL_UNSIGNED_BYTE, nullptr);
+				c.draw();
 				break;
 			}
 
