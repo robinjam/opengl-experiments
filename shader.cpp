@@ -1,6 +1,7 @@
 #include "shader.hpp"
 
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -28,6 +29,9 @@ shader::shader(const char *filename, GLuint type)
 	glGetShaderiv(name, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE)
 	{
+		GLchar log[512];
+		glGetShaderInfoLog(name, 512, nullptr, log);
+		std::cerr << log << std::endl;
 		glDeleteShader(name);
 		throw std::runtime_error(std::string("Unable to compile ") + filename);
 	}

@@ -1,6 +1,7 @@
 #include "program.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 #include <stdexcept>
 
 program::program(std::initializer_list<shader *> shaders)
@@ -21,6 +22,9 @@ program::program(std::initializer_list<shader *> shaders)
 	glGetProgramiv(name, GL_LINK_STATUS, &status);
 	if (status != GL_TRUE)
 	{
+		GLchar log[512];
+		glGetProgramInfoLog(name, 512, nullptr, log);
+		std::cerr << log << std::endl;
 		glDeleteProgram(name);
 		throw std::runtime_error("Unable to link shader program");
 	}
