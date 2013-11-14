@@ -1,8 +1,7 @@
-#define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
-
 #include <cmath>
 #include <cstdlib>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
@@ -87,6 +86,11 @@ int main(int argc, const char *argv[])
 			throw std::runtime_error("glfwCreateWindow failed");
 
 		glfwMakeContextCurrent(window);
+
+		glewExperimental = GL_TRUE;
+		GLenum err = glewInit();
+		if (err != GLEW_OK)
+			throw std::runtime_error(std::string("glewInit failed with error: ") + (const char *) glewGetErrorString(err));
 
 		glfwSetKeyCallback(window, key_callback);
 
