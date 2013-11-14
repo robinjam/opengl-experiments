@@ -7,6 +7,7 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "cone.hpp"
 #include "cube.hpp"
 #include "mesh.hpp"
 #include "shader.hpp"
@@ -103,6 +104,7 @@ int main(int argc, const char *argv[])
 			std::cerr << "[WARNING] Default framebuffer is not sRGB capable" << std::endl;
 
 		shader passthrough("shaders/vertex/passthrough.glsl", GL_VERTEX_SHADER);
+		shader transform("shaders/vertex/transform.glsl", GL_VERTEX_SHADER);
 		shader quadsphere("shaders/tess_evaluation/normalize.glsl", GL_TESS_EVALUATION_SHADER);
 		shader wireframe("shaders/geometry/wireframe.glsl", GL_GEOMETRY_SHADER);
 		shader normals("shaders/geometry/normals.glsl", GL_GEOMETRY_SHADER);
@@ -114,8 +116,11 @@ int main(int argc, const char *argv[])
 		program prog2{&passthrough, &quadsphere, &normals, &solid};
 		prog2.set_uniform("colour", glm::vec4(0.f, 1.f, 0.f, 1.f));
 		program prog3{&passthrough, &quadsphere, &phong};
+		program prog4{&transform, &wireframe, &solid};
+		prog4.set_uniform("colour", glm::vec4(1.f, 1.f, 1.f, 1.f));
 
 		cube c;
+		cone cn(16);
 
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
@@ -133,9 +138,11 @@ int main(int argc, const char *argv[])
 			prog.set_uniform("modelview", modelview);
 			prog2.set_uniform("modelview", modelview);
 			prog3.set_uniform("modelview", modelview);
+			prog4.set_uniform("modelview", modelview);
 			prog.set_uniform("projection", projection);
 			prog2.set_uniform("projection", projection);
 			prog3.set_uniform("projection", projection);
+			prog4.set_uniform("projection", projection);
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -147,6 +154,10 @@ int main(int argc, const char *argv[])
 			case 0: // Wireframe sphere
 				prog.use();
 				c.draw();
+				break;
+			case 1: // Wireframe cone
+				prog4.use();
+				cn.draw();
 				break;
 			case 3: // Lit sphere
 				prog3.use();
