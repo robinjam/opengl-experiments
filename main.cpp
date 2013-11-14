@@ -16,7 +16,7 @@
 
 namespace
 {
-	unsigned char num_subdivisions = 11;
+	unsigned char num_subdivisions = 7;
 	unsigned char mode = 0;
 
 	void update_subdivisions()
