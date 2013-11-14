@@ -1,6 +1,7 @@
 #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 
+#include <cmath>
 #include <cstdlib>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -132,8 +133,7 @@ int main(int argc, const char *argv[])
 
 		while (!glfwWindowShouldClose(window))
 		{
-			model = glm::rotate(model, float(glfwGetTime() * 10), glm::vec3(0.f, 1.f, 0.f));
-			glfwSetTime(0.);
+			model = glm::mat4(1.f);
 			glm::mat4 modelview = view * model;
 			prog.set_uniform("modelview", modelview);
 			prog2.set_uniform("modelview", modelview);
@@ -163,6 +163,22 @@ int main(int argc, const char *argv[])
 				prog3.use();
 				c.draw();
 				break;
+			case 4: // Multiple objects moving around
+				glm::mat4 tmp = glm::rotate(glm::mat4(1.f), float(glfwGetTime() * 20), glm::vec3(0.f, 1.f, 0.f));
+
+				model = glm::translate(tmp, glm::vec3(-1.5f, cos(glfwGetTime()), 0.f));
+				model = glm::rotate(model, float(glfwGetTime() * 45), glm::vec3(0.f, 1.f, 0.f));
+				modelview = view * model;
+				prog4.set_uniform("modelview", modelview);
+				prog4.use();
+				cn.draw();
+
+				model = glm::translate(tmp, glm::vec3(1.5f, -cos(glfwGetTime()), 0.f));
+				model = glm::rotate(model, float(glfwGetTime() * -45), glm::vec3(0.f, 1.f, 0.f));
+				modelview = view * model;
+				prog.set_uniform("modelview", modelview);
+				prog.use();
+				c.draw();
 			}
 
 			glfwSwapBuffers(window);
