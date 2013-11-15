@@ -92,6 +92,9 @@ int main(int argc, const char *argv[])
 		if (err != GLEW_OK)
 			throw std::runtime_error(std::string("glewInit failed with error: ") + (const char *) glewGetErrorString(err));
 
+		// GLEW causes an OpenGL error inside glewInit(), so call glGetError() until all error flags are cleared
+		while (glGetError());
+
 		glfwSetKeyCallback(window, key_callback);
 
 		std::cout << "[INFO] GL_VENDOR: " << glGetString(GL_VENDOR) << std::endl;
