@@ -7,10 +7,7 @@ uniform mat4 projection;
 
 layout(location = 0) in vec3 position;
 
-out vec4 te_Position;
-
 void main()
 {
-	te_Position = modelview * vec4(position, 1.0);
-	gl_Position = projection * te_Position;
+	gl_Position = projection * modelview * vec4(position, 1.0);
 }

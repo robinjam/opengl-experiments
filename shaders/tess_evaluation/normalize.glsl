@@ -7,8 +7,17 @@ layout(quads) in;
 uniform mat4 modelview;
 uniform mat4 projection;
 
-out vec4 te_Position;
-out vec4 te_Normal;
+out EyeSpaceVertex
+{
+	vec4 position;
+	vec4 normal;
+} es_Out;
+
+out ObjectSpaceVertex
+{
+	vec4 position;
+	vec4 normal;
+} os_Out;
 
 void main()
 {
@@ -22,9 +31,12 @@ void main()
 	vec3 p3 = (1 - u) *      v  * gl_in[3].gl_Position.xyz;
 	vec3 p = normalize(p0 + p1 + p2 + p3);
 
-	te_Position = modelview * vec4(p, 1.0);
-	te_Normal = modelview * vec4(p, 0.0);
+	os_Out.position = vec4(p, 1.0);
+	os_Out.normal = vec4(p, 0.0);
+
+	es_Out.position = modelview * os_Out.position;
+	es_Out.normal = modelview * os_Out.normal;
 
 	// Normalize the position of the current vertex so that all vertices sit on the unit sphere
-	gl_Position = projection * te_Position;
+	gl_Position = projection * es_Out.position;
 }
