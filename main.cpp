@@ -106,6 +106,8 @@ int main(int argc, const char *argv[])
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_FRAMEBUFFER_SRGB);
 
+		glClearColor(1.0, 1.0, 1.0, 1.0);
+
 		GLint value;
 		glGetFramebufferAttachmentParameteriv(GL_DRAW_FRAMEBUFFER, GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING, &value);
 		if (value != GL_SRGB)
@@ -120,12 +122,12 @@ int main(int argc, const char *argv[])
 		shader phong("shaders/fragment/phong.glsl", GL_FRAGMENT_SHADER);
 
 		program prog{&passthrough, &quadsphere, &wireframe, &solid};
-		prog.set_uniform("colour", glm::vec4(1.f, 1.f, 1.f, 1.f));
+		prog.set_uniform("colour", glm::vec4(0.f, 0.f, 0.f, 1.f));
 		program prog2{&passthrough, &quadsphere, &normals, &solid};
-		prog2.set_uniform("colour", glm::vec4(0.f, 1.f, 0.f, 1.f));
+		prog2.set_uniform("colour", glm::vec4(0.f, .5f, 0.f, 1.f));
 		program prog3{&passthrough, &quadsphere, &phong};
 		program prog4{&transform, &wireframe, &solid};
-		prog4.set_uniform("colour", glm::vec4(1.f, 1.f, 1.f, 1.f));
+		prog4.set_uniform("colour", glm::vec4(0.f, 0.f, 0.f, 1.f));
 
 		cube c;
 		cone cn(16);
